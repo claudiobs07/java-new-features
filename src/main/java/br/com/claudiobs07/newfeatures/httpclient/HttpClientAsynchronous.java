@@ -13,6 +13,8 @@ import static java.util.stream.Collectors.toList;
 
 public class HttpClientAsynchronous {
 
+    // 11
+
     public static void main(String[] args) {
 
         final List<URI> uris = Stream.of("https://www.cvc.com.br/", "https://www.github.com/", "https://www.google.com/")

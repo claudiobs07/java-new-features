@@ -9,6 +9,8 @@ import java.time.Duration;
 
 public class HttpClientSynchronous {
 
+    // 11
+
     public static void main(String[] args) {
         HttpClient httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))
