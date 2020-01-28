@@ -22,5 +22,23 @@ public class OptionalDemoTest {
         Assert.assertEquals("[]", result2.toString());
     }
 
+    @Test
+    public void testIfPresentOrElse() {
+        String input = "java";
+        Optional.ofNullable(input)
+                .filter(i -> i.startsWith("a"))
+                .ifPresentOrElse(
+                        i -> System.out.println("something to do"),
+                        () -> System.out.println("do something")
+                );
+    }
+
+    @Test
+    public void testOr() {
+        String input1 = null;
+        String input2 = "groovy";
+        Optional<String> inputOpt = Optional.ofNullable(input1).or(() -> Optional.of(input2));
+        Assert.assertEquals("groovy", inputOpt.get());
+    }
 
 }
