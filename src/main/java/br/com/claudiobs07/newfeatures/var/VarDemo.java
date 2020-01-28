@@ -1,42 +1,39 @@
 package br.com.claudiobs07.newfeatures.var;
 
 import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class VarDemo {
 
     public static void main(String[] args) {
-        demoVar();
-        coolThingsWithVar();
-        notCool();
+//        simpleWithVar();
+//        coolThingsWithVar();
+        varInLambadaParameters();
     }
 
-    public static void demoVar() {
-        String cat = "Jack";
+    public static void simpleWithVar() {
+        var cat = "Jack";
 
-        List<String> catNames = List.of("Ella", "Jelly", "Eclair", "Jack");
+        var catNames = List.of("Ella", "Jelly", "Eclair", "Jack");
 
-        Map<String, List<String>> catsWithDescription = Map.of(//
+        var catsWithDescription = Map.of(//
                 "Jack", List.of("Super-fluffy.", "Sleeps all day long."), //
                 "Ella", List.of("Black Bombay cat.", "Playful, fast, and agile.")//
         );
 
         // In a FOR loop
-        for (int i = 0; i < 10; i++) {
+        for (var i = 0; i < 10; i++) {
             System.out.println(i);
         }
 
         // in a try-with-resources
-        try (Stream<String> lines = Files.lines(Paths.get("src/main/java/com/packt/tfesenko/java12/section2/video2_1/VarDemo.java"))) {
+        try (Stream<String> lines = Files.lines(Paths.get("src/main/java/br/com/claudiobs07/newfeatures/var/VarDemo.java"))) {
             lines.forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,30 +60,22 @@ public class VarDemo {
                     List<String> description = cat.getValue();
                 }).collect(Collectors.toList());
 
-        // catObjects.forEach(cat -> System.out.println(cat.name + ": " + cat.description)); // doesn't compile with Object, compiles with var
-
-        // var in lambda parameters
-        AddressOperation toSingleLine1 =
-                (String line1, int aptNumber, int zip) -> line1 + ", apt. " + aptNumber + "  " + zip;
+//         catObjects.forEach(cat -> System.out.println(cat.name + ": " + cat.description)); // doesn't compile with Object, compiles with var
     }
 
-    public static void notCool() {
-    }
+    public static void varInLambadaParameters() {
+        AddressOperation toSingleLine =
+                (String line1, Integer aptNumber, Integer zip) -> line1 + ", apt. " + aptNumber + "  " + zip;
 
+//        AddressOperation toSingleLine =
+//                (var line1, @NotNull var aptNumber, @Nullable var zip) -> line1 + ", apt. " + aptNumber + "  " + zip;
 
-    @Target(ElementType.TYPE_USE)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface ZipCode {
-    }
-
-    @Target(ElementType.TYPE_USE)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Nullable {
+        IntStream.of(1, 2, 3).mapToObj(x -> toSingleLine.build(null, null, null)).collect(Collectors.toList());
     }
 
     @FunctionalInterface
     interface AddressOperation {
-        String build(String line1, int aptNumber, int zip);
+        String build(String line1, Integer aptNumber, Integer zip);
     }
 
 }
